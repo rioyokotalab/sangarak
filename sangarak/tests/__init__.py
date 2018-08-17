@@ -41,6 +41,4 @@ class TestDistributedMatrix(TestCase):
         num_procs = 4
 
         m = sangarak.read_matrix(files, "row", n, nb, pb, num_procs)
-        print(m)
-        
         self.assertTrue(np.array_equal(matrix, m))

@@ -4,3 +4,7 @@ Python module for collecting distributed matrices from files and creating a sing
 # Usage
 
 Use the `sangarak.read_matrix` method for reading the matrix. Read the docs for details.
+
+# Installation
+
+cd into the directory and run `pip install .`.

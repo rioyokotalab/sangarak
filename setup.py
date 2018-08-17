@@ -15,4 +15,5 @@ setup(
     url='https://github.com/rioyokotalab/sangarak',
     test_suite='nose.collector',
     tests_require=['nose'],
+    zip_safe=False
 )
