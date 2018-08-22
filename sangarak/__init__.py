@@ -4,18 +4,23 @@ import math
 def convert_to_number_list(string):
     return [float(s) for s in string.split(' ')]
 
-def generate_file_dict(f_name, procs):
+def generate_file_dict(f_name, procs,**kwargs):
+    path = kwargs.get('path')
+    if not path:
+        path = ""
+        
     d = {}
     for proc in range(0,procs):
-        d[proc] = str(proc) + f_name + ".txt"
+        d[proc] = path + str(proc) + f_name + ".txt"
 
     return d
 
-def read_matrix(files, major, n, nb, pb, num_procs):
+def read_matrix(files, major, n, nb, pb, num_procs, dist="block_cyclic"):
     """
     Read matrices from files specified inside a dict called 'files'. The key of 
     the dict is the process number from the file was outputted and the
-    corresponding value is the actual name of the file. Only works for square matrix (for now).
+    corresponding value is the actual name of the file. Only works for square 
+    matrix (for now).
 
     This implementation is specific to block cyclic matrices stored on multiple MPI processes.
     
@@ -69,3 +74,25 @@ def read_matrix(files, major, n, nb, pb, num_procs):
             raise NotImplementedError("column-major not implemented.")
 
     return matrix
+
+def read_file(file_name, n, nb, pb, num_procs, **kwargs):
+    """
+    Helper method for reading a distributed matrix just by specifying a common
+    filename postfix. Defaults to row major.
+    
+    Say you have 4 files "0input.txt", "1input.txt", "2input.txt" and "3input.txt"
+    then the file_name argument should be "input".
+
+    Arguments
+    ---------
+
+    file_name : string
+
+    Keyword arguments
+    -----------------
+    path : string
+    """
+    path = kwargs.get('path')
+
+    d = generate_file_dict(file_name, num_procs, path=path)
+    return read_matrix(d, "row", n, nb, pb, num_procs)
