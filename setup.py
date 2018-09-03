@@ -23,6 +23,7 @@ setup(
     zip_safe=False,
     classifiers=[
         "Programming Language :: Python :: 3",
-        "License :: BSD 3-clause"
+        "License :: OSI Approved :: BSD License",
+        "Operating System :: OS Independent"
     ]
 )
