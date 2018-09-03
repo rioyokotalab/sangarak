@@ -5,6 +5,7 @@ import os
 import sangarak
 
 fixtures = "sangarak/tests/fixtures/"
+np.set_printoptions(precision=3, linewidth=250, suppress=True)
 
 class Test_16x16_4x4_2x2_Matrix(TestCase):
     def __init__(self, *args, **kwargs):
@@ -13,7 +14,7 @@ class Test_16x16_4x4_2x2_Matrix(TestCase):
         self.matrix = np.arange(16*16).reshape(16,16)
         self.matrix[np.diag_indices_from(self.matrix)] += 5000
         self.n = 16
-        self.nb = 8
+        self.nb = 4
         self.pb = 2
         self.num_procs = 4
 
@@ -25,7 +26,6 @@ class Test_16x16_4x4_2x2_Matrix(TestCase):
             3: self.path + "3input.txt"
         }
         m = sangarak.read_matrix(files, "row", self.n, self.nb, self.pb, self.num_procs)
-        print(m)
         self.assertTrue(np.array_equal(self.matrix, m))
             
 class Test_16x16_8x8_2x2_Matrix(TestCase):

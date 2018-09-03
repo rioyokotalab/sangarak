@@ -52,6 +52,9 @@ def read_matrix(files, major, n, nb, pb, num_procs, dist="block_cyclic"):
     width = math.sqrt(num_procs)
     nb_r = nb // pb
     nb_c = nb // pb
+    num_block_nrows = n // nb
+    num_block_ncols = n // nb
+    numroc = num_block_nrows * nb_r # num elements in process row
     
     for proc, file_name in files.items():
         f = open(file_name, "r")
@@ -62,13 +65,13 @@ def read_matrix(files, major, n, nb, pb, num_procs, dist="block_cyclic"):
         mycol = int(proc - (myrow * width))
 
         if major == "row":
-            for pr in range(pb):
+            for pr in range(num_block_nrows):
                 for r in range(nb_r):
-                    for pc in range(pb):
+                    for pc in range(num_block_ncols):
                         for c in range(nb_c):
                             glob_row = int(r + myrow*nb_r + pr*nb)
                             glob_col = int(c + mycol*nb_c + pc*nb)
-                            index = (r + pr*nb_r)*nb + c + pc*nb_c
+                            index = (r + pr*nb_r)*numroc + c + pc*nb_c
                             matrix[glob_row, glob_col] = arr[index]
         elif major == "col":
             raise NotImplementedError("column-major not implemented.")
